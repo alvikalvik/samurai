@@ -6,7 +6,11 @@ const MyPosts = () => {
     let postsData = [
         {id: 1, message: "Hi, how are you?", likesCount: "15"},
         {id: 2, message: "Hello World!!!", likesCount: "13"},
+        {id: 3, message: "And hello to you from the World!", likesCount: "99"},
     ];
+
+    let postsElements = postsData
+        .map( ({message, likesCount}) => <Post message={message} likesCount={likesCount} />);
 
     return (
         <div className={myPosts}>
@@ -26,8 +30,7 @@ const MyPosts = () => {
                 </button>
             </form>
             <div>
-                <Post message={postsData[0].message} likesCount={postsData[0].likesCount} />
-                <Post message={postsData[1].message} likesCount={postsData[1].likesCount} />                                
+                {postsElements}                              
             </div>
         </div>     
     );
