@@ -18,22 +18,34 @@ const Message = ({message}) => {
 };
 
 const Dialogs = () => {
+
+    let dialogsData = [
+        {id: 1, name: "User1"},
+        {id: 2, name: "User2"},
+        {id: 3, name: "User3"},
+        {id: 4, name: "User4"},
+        {id: 5, name: "User5"},
+    ];
+
+    let messagesData = [
+        {id: 1, message: "1Lorem, ipsum dolor."},
+        {id: 2, message: "2Lorem, ipsum."},
+        {id: 3, message: "3Lorem ipsum dolor sit, amet consectetur adipisicing."},
+        {id: 4, message: "4Lorem ipsum dolor sit amet consectetur adipisicing elit. Error?"},
+    ];
+
     return (
         <div className={dialogs}>
             <div className={dialogsBar}>
-                <Dialog name="User1" id = "1" />
-                <Dialog name="User2" id = "2" />
-                <Dialog name="User3" id = "3" />
-                <Dialog name="User4" id = "4" />
-                <Dialog name="User5" id = "5" />               
+                <Dialog name={dialogsData[0].name} id = {dialogsData[0].id} />
+                <Dialog name={dialogsData[1].name} id = {dialogsData[1].id} />
+                               
                 
             </div>
             <div className={dialogsDivider}></div>
             <div className={dialogsMessages}>
-                <Message message="Lorem, ipsum dolor."/>
-                <Message message="Lorem, ipsum."/>
-                <Message message="Lorem ipsum dolor sit, amet consectetur adipisicing."/>
-                <Message message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Error?"/>                
+                <Message message={messagesData[0].message} />                                
+                <Message message={messagesData[1].message} />                                
             </div>
         </div>
     );
