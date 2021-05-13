@@ -19,28 +19,3 @@
 .dialogsMessages {
     padding: 10px;
 }
-
-.dialog {
-    
-}
-
-.dialog a {
-    display: block;
-    padding: 5px 10px;
-    color: #000000;
-    text-decoration: none;
-    transition: transform 0.6s;
-}
-
-.dialog a:hover {
-    transform: scale(1.05);
-}
-
-.dialogActive {
-    font-weight: 700;
-    color: rgb(20, 35, 82);
-}
-
-.messageClass {
-    padding: 5px;
-}
