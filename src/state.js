@@ -42,25 +42,31 @@ const store = {
         console.log(this._state);
     },
 
-    addPost() {    
-        const newPost = {
-            id: 4,
-            message: this._state.profilePage.newPostText,
-            likesCount: "0"
-        };
-        this._state.profilePage.postsData.push(newPost);
-        this._state.profilePage.newPostText = '';
-        this._doSubscriberAction(this._state);
-    },
-
-    updateNewPostText(text) {        
-        this._state.profilePage.newPostText = text;
-        this._doSubscriberAction(this._state);
-    },
-
     subscribe(observer) {
         this._doSubscriberAction = observer;
-    }
+    },
+
+    dispatch(action) {
+        switch (action.type) {
+            case 'ADD-POST':
+                const newPost = {
+                    id: 4,
+                    message: this._state.profilePage.newPostText,
+                    likesCount: "0"
+                };
+                this._state.profilePage.postsData.push(newPost);
+                this._state.profilePage.newPostText = '';
+                this._doSubscriberAction(this._state);
+                break;
+            case 'UPDATE-NEW-POST-TEXT':
+                this._state.profilePage.newPostText = action.text;
+                this._doSubscriberAction(this._state);
+                break;
+            default:
+                console.log(`Sorry, No appropriate action type for dispatch`);
+          }
+
+    },    
 };
 
 export default store;

@@ -2,18 +2,18 @@ import React from 'react';
 import {myPosts, myPostsTitle, myPostsForm, newPostTextarea, newPostBtn} from './MyPosts.module.css';
 import Post from './Post/Post';
 
-const MyPosts = ({postsData, newPostText, addPost, updateNewPostText}) => {
+const MyPosts = ({postsData, newPostText, dispatch}) => {
 
     let textarea = React.createRef();
 
     const handleTextChange = () => {
         const text = textarea.current.value;
-        updateNewPostText(text);
+        dispatch({type: 'UPDATE-NEW-POST-TEXT', text: text});        
     };
 
     const addNewPost = (evt) => {
-        evt.preventDefault();                
-        addPost();        
+        evt.preventDefault();
+        dispatch({type: 'ADD-POST'});  
     };
 
     let postsElements = postsData
