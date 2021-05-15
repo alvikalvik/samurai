@@ -1,14 +1,23 @@
-import {nav, activeLink} from './Navbar.module.css';
+import {nav, activeLink, navA} from './Navbar.module.css';
 import {NavLink} from 'react-router-dom';
+import Friends from './Friends/Friends';
+import styled from 'styled-components';
 
-const Navbar = () => {
+const LinksList = styled.ul`
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    `;
+    
+const Navbar = ({state}) => {    
     return (
         <nav className={nav}>
-            <ul>
+            <LinksList>
                 <li>
                     <NavLink
                         to="/profile"
                         activeClassName={activeLink}
+                        className={navA}
                     >
                         Profile
                     </NavLink>
@@ -17,6 +26,7 @@ const Navbar = () => {
                     <NavLink
                         to="/dialogs"
                         activeClassName={activeLink}
+                        className={navA}
                     >
                         Messages
                     </NavLink>
@@ -25,6 +35,7 @@ const Navbar = () => {
                     <NavLink
                         to="/news"
                         activeClassName={activeLink}
+                        className={navA}
                     >
                         News
                     </NavLink>
@@ -33,6 +44,7 @@ const Navbar = () => {
                     <NavLink
                         to="/music"
                         activeClassName={activeLink}
+                        className={navA}
                     >
                         Music
                     </NavLink>
@@ -41,12 +53,15 @@ const Navbar = () => {
                     <NavLink
                         to="/settings"
                         activeClassName={activeLink}
+                        className={navA}
                     >
                         Settings
                     </NavLink>
                 </li>
-            </ul>
-        </nav>        
+            </LinksList>
+
+            <Friends friendsData={state.friends} />
+        </nav>
     );
 }
 

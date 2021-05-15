@@ -1,13 +1,16 @@
+import React from 'react';
 import {myPosts, myPostsTitle, myPostsForm, newPostTextarea, newPostBtn} from './MyPosts.module.css';
 import Post from './Post/Post';
 
-const MyPosts = () => {
+const MyPosts = ({postsData, addPost}) => {
 
-    let postsData = [
-        {id: 1, message: "Hi, how are you?", likesCount: "15"},
-        {id: 2, message: "Hello World!!!", likesCount: "13"},
-        {id: 3, message: "And hello to you from the World!", likesCount: "99"},
-    ];
+    let textarea = React.createRef();
+
+    const addNewPost = (evt) => {
+        evt.preventDefault();
+        const text = textarea.current.value;        
+        addPost(text);
+    };
 
     let postsElements = postsData
         .map( ({message, likesCount}) => <Post message={message} likesCount={likesCount} />);
@@ -15,12 +18,13 @@ const MyPosts = () => {
     return (
         <div className={myPosts}>
             <h3 className={myPostsTitle}>My posts</h3>
-            <form className={myPostsForm}>
+            <form className={myPostsForm} onSubmit={addNewPost}>
                 <textarea
                     name="newpost"
                     id="newpost"
                     className={newPostTextarea}
                     placeholder="Write new message here"
+                    ref={textarea}
                 />
 
                 <button                    
