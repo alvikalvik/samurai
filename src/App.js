@@ -9,7 +9,7 @@ import Settings from "./components/Settings/Settings";
 import {Route, BrowserRouter} from 'react-router-dom';
 
 
-const App = ({state, addPost}) => {
+const App = ({state, addPost, updateNewPostText}) => {
     return (
         <BrowserRouter>
             <div className="app-wrapper">
@@ -18,8 +18,9 @@ const App = ({state, addPost}) => {
                 <main className="app-content">
                     <Route path="/profile">
                         <Profile
-                            state={state.profilePage}
-                            addPost={addPost} />
+                            profileState={state.profilePage}
+                            addPost={addPost}
+                            updateNewPostText={updateNewPostText} />
                     </Route>
                     <Route path="/dialogs">
                         <Dialogs state={state.dialogsPage} />

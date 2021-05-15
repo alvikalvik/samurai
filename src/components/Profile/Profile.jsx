@@ -2,13 +2,15 @@ import MyPosts from './MyPosts/MyPosts';
 import styles from './Profile.module.css';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
-const Profile = ({state, addPost}) => {    
+const Profile = ({profileState, addPost, updateNewPostText}) => {    
     return (
         <>
             <ProfileInfo />            
             <MyPosts
-                postsData={state.postsData}
-                addPost={addPost} />
+                postsData={profileState.postsData}
+                newPostText={profileState.newPostText}
+                addPost={addPost}
+                updateNewPostText={updateNewPostText} />
         </>
     );
 }

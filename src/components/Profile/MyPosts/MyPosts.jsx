@@ -2,14 +2,18 @@ import React from 'react';
 import {myPosts, myPostsTitle, myPostsForm, newPostTextarea, newPostBtn} from './MyPosts.module.css';
 import Post from './Post/Post';
 
-const MyPosts = ({postsData, addPost}) => {
+const MyPosts = ({postsData, newPostText, addPost, updateNewPostText}) => {
 
     let textarea = React.createRef();
 
+    const handleTextChange = () => {
+        const text = textarea.current.value;
+        updateNewPostText(text);
+    };
+
     const addNewPost = (evt) => {
-        evt.preventDefault();
-        const text = textarea.current.value;        
-        addPost(text);
+        evt.preventDefault();                
+        addPost();        
     };
 
     let postsElements = postsData
@@ -25,6 +29,8 @@ const MyPosts = ({postsData, addPost}) => {
                     className={newPostTextarea}
                     placeholder="Write new message here"
                     ref={textarea}
+                    value={newPostText}
+                    onChange={handleTextChange}
                 />
 
                 <button                    
