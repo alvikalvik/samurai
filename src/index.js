@@ -3,27 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
-import state from './state';
-import {addPost, updateNewPostText, subscribe} from './state';
+import store from './state';
 
-const rerenderEntireTree = (state) => {  
+const rerenderEntireTree = () => {  
   ReactDOM.render(
     <React.StrictMode>
       <App
-        state={state}
-        addPost={addPost}
-        updateNewPostText={updateNewPostText}
-        // postsData={postsData}
-        // dialogsData={dialogsData}
-        // messagesData={messagesData}
+        state={store.getState()}
+        addPost={store.addPost.bind(store)}
+        updateNewPostText={store.updateNewPostText.bind(store)}
       />
     </React.StrictMode>,
     document.getElementById('root')
   );
 };
 
-rerenderEntireTree(state);
-subscribe(rerenderEntireTree);
+rerenderEntireTree();
+store.subscribe(rerenderEntireTree);
 
 
 
