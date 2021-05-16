@@ -1,6 +1,7 @@
 import React from 'react';
 import {myPosts, myPostsTitle, myPostsForm, newPostTextarea, newPostBtn} from './MyPosts.module.css';
 import Post from './Post/Post';
+import {addPostActionCreator, updateNewPostTextActionCreator} from '../../../state';
 
 const MyPosts = ({postsData, newPostText, dispatch}) => {
 
@@ -8,12 +9,14 @@ const MyPosts = ({postsData, newPostText, dispatch}) => {
 
     const handleTextChange = () => {
         const text = textarea.current.value;
-        dispatch({type: 'UPDATE-NEW-POST-TEXT', text: text});        
+        const action = updateNewPostTextActionCreator(text);        
+        dispatch(action);       
     };
 
     const addNewPost = (evt) => {
         evt.preventDefault();
-        dispatch({type: 'ADD-POST'});  
+        const action = addPostActionCreator();
+        dispatch(action);  
     };
 
     let postsElements = postsData
