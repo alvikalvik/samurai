@@ -1,8 +1,6 @@
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
-
-const ADD_DIALOG_MESSAGE = 'ADD-DIALOG-MESSAGE';
-const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
+import profileReduser from './profileReduser';
+import dialogsReduser from './dialogsReduser';
+import navbarReduser from './navbarReduser';
 
 const store = {
     _state: {
@@ -45,63 +43,21 @@ const store = {
         return this._state;
     },
 
-    _doSubscriberAction() {
+    _callSubscriber() {
         console.log(this._state);
     },
 
     subscribe(observer) {
-        this._doSubscriberAction = observer;
+        this._callSubscriber = observer;
     },
 
     dispatch(action) {
-        switch (action.type) {
-            case ADD_POST:
-                const newPost = {
-                    id: 4,
-                    message: this._state.profilePage.newPostText,
-                    likesCount: "0"
-                };
-                this._state.profilePage.postsData.push(newPost);
-                this._state.profilePage.newPostText = '';
-                this._doSubscriberAction(this._state);
-                break;
-            case UPDATE_NEW_POST_TEXT:
-                this._state.profilePage.newPostText = action.text;
-                this._doSubscriberAction(this._state);
-                break;
-            case ADD_DIALOG_MESSAGE:
-                debugger;
-                const newMessage = {
-                    id: 6,
-                    message: this._state.dialogsPage.newMessageText,                    
-                };
-                this._state.dialogsPage.messagesData.push(newMessage);
-                this._state.dialogsPage.newMessageText = '';
-                this._doSubscriberAction(this._state);
-                break;
-            case UPDATE_NEW_MESSAGE_TEXT:
-                this._state.dialogsPage.newMessageText = action.text;
-                this._doSubscriberAction(this._state);
-                break;
-            default:
-                console.log(`Sorry, No appropriate action type for dispatch`);
-          }
+        this._state.profilePage = profileReduser(this._state.profilePage, action);
+        this._state.dialogsPage = dialogsReduser(this._state.dialogsPage, action);
+        this._state.navbar = navbarReduser(this._state.navbar, action);
+        this._callSubscriber(this._state);
     },    
 };
-
-export const addPostActionCreator = () => ( {type: ADD_POST} );
-export const updateNewPostTextActionCreator = (text) => ({
-    type: UPDATE_NEW_POST_TEXT,
-    text: text
-});
-
-export const addDialogMessageCreator = () =>
-    ( {type: ADD_DIALOG_MESSAGE} );
-export const updateNewDialogMessageTextCreator = (text) => ({
-    type: UPDATE_NEW_MESSAGE_TEXT,
-    text: text
-});
-
 
 export default store;
 window.store = store;

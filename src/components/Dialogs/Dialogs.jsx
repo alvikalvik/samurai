@@ -1,7 +1,7 @@
 import styles from './Dialogs.module.css';
 import Message from './Message/Message';
 import Dialog from './Dialog/Dialog';
-import {addDialogMessageCreator, updateNewDialogMessageTextCreator} from '../../state';
+import {addDialogMessageCreator, updateNewDialogMessageTextCreator} from '../../redux/dialogsReduser';
 
 const {dialogs, dialogsBar, dialogsDivider, dialogsMessages, messagesTitle, dialogsForm, newMessageTextarea, newMessageText, newMessageBtn} = styles;
 
