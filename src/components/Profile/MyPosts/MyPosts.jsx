@@ -3,12 +3,10 @@ import {myPosts, myPostsTitle, myPostsForm, newPostTextarea, newPostBtn} from '.
 import Post from './Post/Post';
 import {addPostActionCreator, updateNewPostTextActionCreator} from '../../../state';
 
-const MyPosts = ({postsData, newPostText, dispatch}) => {
+const MyPosts = ({postsData, newPostText, dispatch}) => {    
 
-    let textarea = React.createRef();
-
-    const handleTextChange = () => {
-        const text = textarea.current.value;
+    const handleTextChange = (evt) => {
+        const text = evt.target.value;
         const action = updateNewPostTextActionCreator(text);        
         dispatch(action);       
     };
@@ -30,8 +28,7 @@ const MyPosts = ({postsData, newPostText, dispatch}) => {
                     name="newpost"
                     id="newpost"
                     className={newPostTextarea}
-                    placeholder="Write new message here"
-                    ref={textarea}
+                    placeholder="Write new message here"                    
                     value={newPostText}
                     onChange={handleTextChange}
                 />

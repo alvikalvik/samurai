@@ -23,7 +23,10 @@ const App = ({state, dispatch}) => {
                          />
                     </Route>
                     <Route path="/dialogs">
-                        <Dialogs state={state.dialogsPage} />
+                        <Dialogs
+                            state={state.dialogsPage}
+                            dispatch={dispatch}
+                        />
                     </Route>
                     <Route path="/news">
                         <News />

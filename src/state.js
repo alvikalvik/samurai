@@ -1,6 +1,9 @@
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 
+const ADD_DIALOG_MESSAGE = 'ADD-DIALOG-MESSAGE';
+const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
+
 const store = {
     _state: {
         profilePage: {        
@@ -24,7 +27,8 @@ const store = {
                 {id: 2, message: "2Lorem, ipsum."},
                 {id: 3, message: "3Lorem ipsum dolor sit, amet consectetur adipisicing."},
                 {id: 4, message: "4Lorem ipsum dolor sit amet consectetur adipisicing elit. Error?"},
-            ],        
+            ], 
+            newMessageText: '',       
         },
         navbar: {
             friends: [
@@ -65,25 +69,39 @@ const store = {
                 this._state.profilePage.newPostText = action.text;
                 this._doSubscriberAction(this._state);
                 break;
+            case ADD_DIALOG_MESSAGE:
+                debugger;
+                const newMessage = {
+                    id: 6,
+                    message: this._state.dialogsPage.newMessageText,                    
+                };
+                this._state.dialogsPage.messagesData.push(newMessage);
+                this._state.dialogsPage.newMessageText = '';
+                this._doSubscriberAction(this._state);
+                break;
+            case UPDATE_NEW_MESSAGE_TEXT:
+                this._state.dialogsPage.newMessageText = action.text;
+                this._doSubscriberAction(this._state);
+                break;
             default:
                 console.log(`Sorry, No appropriate action type for dispatch`);
           }
-
     },    
 };
 
-export const addPostActionCreator = () => {
-    return {
-        type: ADD_POST
-    };
-}
+export const addPostActionCreator = () => ( {type: ADD_POST} );
+export const updateNewPostTextActionCreator = (text) => ({
+    type: UPDATE_NEW_POST_TEXT,
+    text: text
+});
 
-export const updateNewPostTextActionCreator = (text) => {
-    return {
-        type: UPDATE_NEW_POST_TEXT,
-        text: text
-    };
-}
+export const addDialogMessageCreator = () =>
+    ( {type: ADD_DIALOG_MESSAGE} );
+export const updateNewDialogMessageTextCreator = (text) => ({
+    type: UPDATE_NEW_MESSAGE_TEXT,
+    text: text
+});
+
 
 export default store;
 window.store = store;
