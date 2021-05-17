@@ -1,35 +1,33 @@
 import React from 'react';
 import {myPosts, myPostsTitle, myPostsForm, newPostTextarea, newPostBtn} from './MyPosts.module.css';
 import Post from './Post/Post';
-import {addPostActionCreator, updateNewPostTextActionCreator} from '../../../redux/profileReduser';
 
-const MyPosts = ({postsData, newPostText, dispatch}) => {    
+const MyPosts = (props) => {    
 
     const handleTextChange = (evt) => {
         const text = evt.target.value;
-        const action = updateNewPostTextActionCreator(text);        
-        dispatch(action);       
+        props.updateNewPostText(text);                      
     };
 
-    const addNewPost = (evt) => {
+    const handleSubmit = (evt) => {
         evt.preventDefault();
-        const action = addPostActionCreator();
-        dispatch(action);  
+        props.addPost();          
     };
 
-    let postsElements = postsData
-        .map( ({message, likesCount}) => <Post message={message} likesCount={likesCount} />);
+    let postsElements = props.postsData
+        .map( ({message, likesCount}) =>
+            <Post message={message} likesCount={likesCount} />);
 
     return (
         <div className={myPosts}>
             <h3 className={myPostsTitle}>My posts</h3>
-            <form className={myPostsForm} onSubmit={addNewPost}>
+            <form className={myPostsForm} onSubmit={handleSubmit}>
                 <textarea
                     name="newpost"
                     id="newpost"
                     className={newPostTextarea}
                     placeholder="Write new message here"                    
-                    value={newPostText}
+                    value={props.newPostText}
                     onChange={handleTextChange}
                 />
 

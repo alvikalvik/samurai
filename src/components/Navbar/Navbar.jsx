@@ -9,7 +9,7 @@ const LinksList = styled.ul`
         margin: 0;
     `;
     
-const Navbar = ({state}) => {    
+const Navbar = (props) => {    
     return (
         <nav className={nav}>
             <LinksList>
@@ -60,7 +60,9 @@ const Navbar = ({state}) => {
                 </li>
             </LinksList>
 
-            <Friends friendsData={state.friends} />
+            <Friends
+                friendsData={props.friendsData}
+            />
         </nav>
     );
 }

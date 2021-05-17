@@ -1,27 +1,24 @@
 import styles from './Dialogs.module.css';
 import Message from './Message/Message';
 import Dialog from './Dialog/Dialog';
-import {addDialogMessageCreator, updateNewDialogMessageTextCreator} from '../../redux/dialogsReduser';
 
-const {dialogs, dialogsBar, dialogsDivider, dialogsMessages, messagesTitle, dialogsForm, newMessageTextarea, newMessageText, newMessageBtn} = styles;
+const {dialogs, dialogsBar, dialogsDivider, dialogsMessages, messagesTitle, dialogsForm, newMessageTextarea, newMessageBtn} = styles;
 
-const Dialogs = ({state, dispatch}) => {    
+const Dialogs = (props) => {    
 
-    const dialogsElements = state.dialogsData
+    const dialogsElements = props.dialogsData
         .map( ({id, name}) => <Dialog name={name} id={id} />);    
 
-    const messagesElements = state.messagesData
+    const messagesElements = props.messagesData
         .map( ({id, message}) => <Message message={message} />);
 
-    const addNewMessage = (evt) => {
+    const handleSubmit = (evt) => {
         evt.preventDefault();
-        const action = addDialogMessageCreator();
-        dispatch(action);
+        props.addNewMessage();
     };
     const handleTextChange = (evt) => {
         const text = evt.target.value;
-        const action = updateNewDialogMessageTextCreator(text);
-        dispatch(action);
+        props.updateNewDialogMessage(text);
     };
 
     return (
@@ -35,13 +32,13 @@ const Dialogs = ({state, dispatch}) => {
                 {messagesElements} 
 
                 <h3 className={messagesTitle}>Add message</h3>
-                <form className={dialogsForm} onSubmit={addNewMessage}>
+                <form className={dialogsForm} onSubmit={handleSubmit}>
                     <textarea
                         name="newmessage"
                         id="newmessage"
                         className={newMessageTextarea}
                         placeholder="Write new message here"                    
-                        value={state.newMessageText}
+                        value={props.newMessageText}
                         onChange={handleTextChange}
                     />
 

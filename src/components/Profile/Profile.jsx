@@ -1,15 +1,12 @@
-import MyPosts from './MyPosts/MyPosts';
-import styles from './Profile.module.css';
+import MyPostsContainer from './MyPosts/MyPostsContainer';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
-const Profile = ({profileState, dispatch}) => {    
+const Profile = (props) => {    
     return (
         <>
             <ProfileInfo />            
-            <MyPosts
-                postsData={profileState.postsData}
-                newPostText={profileState.newPostText}
-                dispatch={dispatch}
+            <MyPostsContainer
+                store={props.store}                
             />
         </>
     );
