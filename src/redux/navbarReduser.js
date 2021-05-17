@@ -8,9 +8,9 @@ const initialState = {
     ],
 };
 
-const navbarReduser = (state = initialState, action) => {
+const navbarReducer = (state = initialState, action) => {
 
     return state;
 };
 
-export default navbarReduser;
+export default navbarReducer;

@@ -9,22 +9,18 @@ import {Route, BrowserRouter} from 'react-router-dom';
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 
 
-const App = (props) => {
+const App = () => {
     return (
         <BrowserRouter>
             <div className="app-wrapper">
                 <Header />
-                <NavbarContainer store={props.store} />
+                <NavbarContainer />
                 <main className="app-content">
                     <Route path="/profile">
-                        <Profile
-                            store={props.store}                            
-                         />
+                        <Profile />
                     </Route>
                     <Route path="/dialogs">
-                        <DialogsContainer
-                            store={props.store}
-                        />
+                        <DialogsContainer />
                     </Route>
                     <Route path="/news">
                         <News />
