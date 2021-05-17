@@ -7,10 +7,10 @@ const {dialogs, dialogsBar, dialogsDivider, dialogsMessages, messagesTitle, dial
 const Dialogs = (props) => {    
 
     const dialogsElements = props.dialogsData
-        .map( ({id, name}) => <Dialog name={name} id={id} />);    
+        .map( ({id, name}) => <Dialog name={name} id={id} key={id} />);    
 
     const messagesElements = props.messagesData
-        .map( ({id, message}) => <Message message={message} />);
+        .map( ({id, message}) => <Message message={message} key={id} />);
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
