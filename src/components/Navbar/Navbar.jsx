@@ -51,6 +51,15 @@ const Navbar = (props) => {
                 </li>
                 <li>
                     <NavLink
+                        to="/users"
+                        activeClassName={activeLink}
+                        className={navA}
+                    >
+                        Users
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
                         to="/settings"
                         activeClassName={activeLink}
                         className={navA}
