@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import avatar from '../../../assets/img/avatar.png';
 
 const UserWrapper = styled.div`
     display: flex;
@@ -66,7 +67,7 @@ const User = (props) => {
     return (
         <UserWrapper>
             <UserPhotoWrapper>
-                <img src={props.userData.photo} alt="Avatar" />
+                <img src={props.userData.photos.small ?? avatar} alt="Avatar" />
                 {props.userData.isFollowed
                     ? <button onClick={handleUnfollow}>Unfollow</button>
                     : <button onClick={handleFollow}>Follow</button>
@@ -75,7 +76,7 @@ const User = (props) => {
             </UserPhotoWrapper>
             <UserInfoWrapper>
                 <UserName>
-                    {props.userData.fullName} <span>({props.userData.location.country}, {props.userData.location.city})</span>
+                    {props.userData.name} <span>({"props.userData.location.country"}, {"props.userData.location.city"})</span>
                 </UserName>
                 <UserStatus>{props.userData.status}</UserStatus>
             </UserInfoWrapper>            
