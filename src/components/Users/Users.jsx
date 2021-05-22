@@ -4,9 +4,18 @@ import * as axios from 'axios';
 
 class Users extends Component {
     componentDidMount = () => {
-        axios.get('https://social-network.samuraijs.com/api/1.0/users')
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.usersCountOnPage}&page=${this.props.currentPage}`)
             .then( response => {                
-                this.props.setUsers(response.data.items);
+                this.props.setUsers(response.data);
+            });
+    }    
+
+    handlePageClick = (e, i) => {        
+        e.preventDefault();        
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.usersCountOnPage}&page=${i}`)
+            .then( response => {                
+                this.props.setUsers(response.data);
+                this.props.setCurrentPage(i);
             });
     }
     
@@ -18,10 +27,25 @@ class Users extends Component {
                         unfollow={this.props.unfollow}                
                     />;
         });
+
+        const pagesCount = Math.ceil(this.props.totalCount / this.props.usersCountOnPage);
+
+        const pages = [];
+
+        for (let i = 1; i <= pagesCount; i++) {            
+            const aStyle = i === this.props.currentPage ? {color: 'red',} : null; 
+            pages.push(<span key={i}> <a
+                            href="#l"
+                            onClick={ (e) => this.handlePageClick(e, i) }
+                            style={aStyle}                            
+                        >{i}</a> </span>);            
+        }
+
         return (
             <div>
-                {usersArray}
-            </div>
+                {pages}
+                {usersArray}                
+            </div>            
         );
     }
 
