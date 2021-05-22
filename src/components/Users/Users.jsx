@@ -22,7 +22,7 @@ const Users = (props) => {
     }
 
     return (
-        <div>
+        <div>            
             {pages}
             {usersArray}                
         </div>            
