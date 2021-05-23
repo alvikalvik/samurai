@@ -2,7 +2,16 @@ import styles from './Dialogs.module.css';
 import Message from './Message/Message';
 import Dialog from './Dialog/Dialog';
 
-const {dialogs, dialogsBar, dialogsDivider, dialogsMessages, messagesTitle, dialogsForm, newMessageTextarea, newMessageBtn} = styles;
+const {
+    dialogs,
+    dialogsBar,
+    dialogsDivider,
+    dialogsMessages,
+    messagesTitle,
+    dialogsForm,
+    newMessageTextarea,
+    newMessageBtn
+} = styles;
 
 const Dialogs = (props) => {    
 
@@ -14,11 +23,11 @@ const Dialogs = (props) => {
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
-        props.addNewMessage();
+        props.addDialogMessage();
     };
     const handleTextChange = (evt) => {
         const text = evt.target.value;
-        props.updateNewDialogMessage(text);
+        props.updateNewDialogMessageText(text);
     };
 
     return (

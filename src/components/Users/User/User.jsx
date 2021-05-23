@@ -37,11 +37,15 @@ const UserInfoWrapper = styled.div`
     padding: 10px;
     border: 2px solid lightgreen;
     overflow: hidden;
+    max-width: 100%;
 `;
 
 const UserName = styled.div`
     font-size: 20px;
     font-weight: 700;
+    overflow: hidden;
+    max-width: 100%;
+    word-break: break-all;
     span {
         font-size: 14px;
         font-weight: 400;
@@ -53,6 +57,9 @@ const UserStatus = styled.div`
     margin-top: 10px;
     font-size: 16px;
     background-color: #ffffff;
+    max-width: 100%;
+    overflow: hidden;
+    word-break: break-all;
 `;
 
 const User = (props) => {
