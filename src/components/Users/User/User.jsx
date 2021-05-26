@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import avatar from '../../../assets/img/avatar.png';
 
@@ -74,7 +75,10 @@ const User = (props) => {
     return (
         <UserWrapper>
             <UserPhotoWrapper>
-                <img src={props.userData.photos.small ?? avatar} alt="Avatar" />
+                <NavLink to="/profile/2">
+                    <img src={props.userData.photos.small ?? avatar} alt="Avatar" />
+                </NavLink>
+                
                 {props.userData.isFollowed
                     ? <button onClick={handleUnfollow}>Unfollow</button>
                     : <button onClick={handleFollow}>Follow</button>
