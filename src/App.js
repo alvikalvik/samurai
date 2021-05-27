@@ -1,5 +1,5 @@
 import "./App.css";
-import Header from "./components/Header/Header";
+import HeaderContainer from "./components/Header/HeaderContainer";
 import NavbarContainer from "./components/Navbar/NavbarContainer";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
@@ -14,7 +14,7 @@ const App = () => {
     return (
         <BrowserRouter>
             <div className="app-wrapper">
-                <Header />
+                <HeaderContainer />
                 <NavbarContainer />
                 <main className="app-content">
                     <Route path="/profile/:userId?">
