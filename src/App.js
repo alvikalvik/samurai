@@ -17,7 +17,7 @@ const App = () => {
                 <Header />
                 <NavbarContainer />
                 <main className="app-content">
-                    <Route path="/profile">
+                    <Route path="/profile/:userId?">
                         <ProfileContainer />
                     </Route>
                     <Route path="/dialogs">

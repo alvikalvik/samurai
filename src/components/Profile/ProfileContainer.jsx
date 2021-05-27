@@ -6,14 +6,20 @@ import Preloader from '../common/Preloader/Preloader';
 import {
     setUserProfile,
 } from '../../redux/profileReduser';
+import { withRouter } from 'react-router';
 
 
 class ProfileContainer extends Component {  
-    componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${this.props.a}`)
+    componentDidMount() {        
+        let userId = this.props.match.params.userId;
+        if (!userId) {
+            userId = this.props.a; // !!! Change in future
+        }        
+        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`)
             .then( response => {                
                 this.props.setUserProfile(response.data);
-            });
+            })
+            .catch(err => console.log('Could not fetch data' + err));
     }
 
     render() {
@@ -40,4 +46,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, {setUserProfile})(ProfileContainer);
+const ProfileWithRouter = withRouter(ProfileContainer);
+
+export default connect(mapStateToProps, {setUserProfile})(ProfileWithRouter);
