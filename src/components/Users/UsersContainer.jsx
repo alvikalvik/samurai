@@ -14,7 +14,9 @@ import * as axios from 'axios';
 class UsersContainer extends Component {
     componentDidMount = () => {
         this.props.setIsFetching(true);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.usersCountOnPage}&page=${this.props.currentPage}`)
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.usersCountOnPage}&page=${this.props.currentPage}`, {
+            withCredentials: true
+        })
             .then( response => {                
                 this.props.setUsers(response.data);
                 this.props.setIsFetching(false);
@@ -24,7 +26,9 @@ class UsersContainer extends Component {
     handlePageClick = (e, i) => {        
         e.preventDefault(); 
         this.props.setIsFetching(true);       
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.usersCountOnPage}&page=${i}`)
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.usersCountOnPage}&page=${i}`, {
+            withCredentials: true
+        })
             .then( response => {                
                 this.props.setUsers(response.data);
                 this.props.setCurrentPage(i);

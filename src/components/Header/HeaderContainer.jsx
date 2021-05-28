@@ -6,10 +6,6 @@ import {
     setUserData,
     setIsFetching,
 } from '../../redux/authReduser';
-
-
-
-
 class HeaderContainer extends Component {
     componentDidMount() {
         this.props.setIsFetching(true);
