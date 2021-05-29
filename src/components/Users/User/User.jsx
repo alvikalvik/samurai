@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import avatar from '../../../assets/img/avatar.png';
-import * as axios from 'axios';
+import { followAPI } from '../../api/api';
 
 const UserWrapper = styled.div`
     display: flex;
@@ -66,15 +66,9 @@ const UserStatus = styled.div`
 
 const User = (props) => {
     const handleUnfollow = () => {
-        
-        axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${props.userData.id}`, {
-            withCredentials: true,
-            headers: {
-                "API-KEY": "0c893310-d8b0-4dbc-a8b5-cc663939eec1"
-            }
-        })
-            .then( response => {    
-                if (response.data.resultCode === 0) {
+        followAPI.unfollowUser(props.userData.id)
+            .then( data => {    
+                if (data.resultCode === 0) {
                     props.unfollow(props.userData.id);
                 }             
             })
@@ -82,15 +76,9 @@ const User = (props) => {
     };
 
     const handleFollow = () => {
-        axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${props.userData.id}`, {}, {
-            withCredentials: true,
-            headers: {
-                "API-KEY": "0c893310-d8b0-4dbc-a8b5-cc663939eec1"
-            }
-        })
-            .then( response => {  
-                console.log(response)  ;
-                if (response.data.resultCode === 0) {
+        followAPI.followUser(props.userData.id)        
+            .then( data => { 
+                if (data.resultCode === 0) {
                     props.follow(props.userData.id);
                 }             
             })
