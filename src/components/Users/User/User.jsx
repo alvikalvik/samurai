@@ -31,6 +31,10 @@ const UserPhotoWrapper = styled.div`
         font-size: 14px;
         font-weight: 700;
         cursor: pointer;
+        &:disabled {
+            background-color: grey;
+            opacity: 0.6;
+        }
     }
 `;
 
@@ -66,24 +70,32 @@ const UserStatus = styled.div`
 
 const User = (props) => {
     const handleUnfollow = () => {
+        props.setFollowingInProgress(true, props.userData.id);
         followAPI.unfollowUser(props.userData.id)
             .then( data => {    
                 if (data.resultCode === 0) {
                     props.unfollow(props.userData.id);
                 }             
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log(err))
+            .finally( () => {
+                props.setFollowingInProgress(false, props.userData.id);
+            });
     };
 
     const handleFollow = () => {
+        props.setFollowingInProgress(true, props.userData.id);
         followAPI.followUser(props.userData.id)        
             .then( data => { 
                 if (data.resultCode === 0) {
                     props.follow(props.userData.id);
                 }             
             })
-            .catch(err => console.log(err));
-    };
+            .catch(err => console.log(err))
+            .finally( () => {
+                props.setFollowingInProgress(false, props.userData.id);
+            });
+    };        
 
     return (
         <UserWrapper>
@@ -93,8 +105,14 @@ const User = (props) => {
                 </NavLink>
                 
                 {props.userData.followed
-                    ? <button onClick={handleUnfollow}>Unfollow</button>
-                    : <button onClick={handleFollow}>Follow</button>
+                    ? <button                    
+                        onClick={handleUnfollow}
+                        disabled={props.followingInProgress.some( item => item === props.userData.id)}
+                      >Unfollow</button>
+                    : <button
+                        onClick={handleFollow}
+                        disabled={props.followingInProgress.some( item => item === props.userData.id)}
+                      >Follow</button>
                 }
                 
             </UserPhotoWrapper>

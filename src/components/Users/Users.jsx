@@ -1,8 +1,10 @@
 import User from "./User/User"
-const Users = (props) => { 
+const Users = (props) => {     
     const usersArray = props.users.map( u => {
         return <User key={u.id}
-                    userData={u}                
+                    userData={u}
+                    followingInProgress={props.followingInProgress}                
+                    setFollowingInProgress={props.setFollowingInProgress}
                     follow={props.follow}
                     unfollow={props.unfollow}                
                 />;

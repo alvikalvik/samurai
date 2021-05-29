@@ -8,6 +8,7 @@ import {
     setUsers,
     setCurrentPage,
     setIsFetching,
+    setFollowingInProgress,
 } from '../../redux/usersReduser';
 import { usersAPI } from '../api/api';
 
@@ -32,18 +33,20 @@ class UsersContainer extends Component {
             });
     }
     
-    render() {        
+    render() {    
         if(this.props.isFetching) {
             return <Preloader />;
         } else {
             return <Users
-            users={this.props.users}
-            usersCountOnPage={this.props.usersCountOnPage}
-            currentPage={this.props.currentPage}
-            totalCount={this.props.totalCount}
-            follow={this.props.follow}
-            unfollow={this.props.unfollow}                    
-            handlePageClick={this.handlePageClick}
+                users={this.props.users}
+                usersCountOnPage={this.props.usersCountOnPage}
+                currentPage={this.props.currentPage}
+                totalCount={this.props.totalCount}
+                followingInProgress={this.props.followingInProgress}
+                follow={this.props.follow}
+                unfollow={this.props.unfollow}                    
+                handlePageClick={this.handlePageClick}
+                setFollowingInProgress={this.props.setFollowingInProgress}
         />;
         }
     }    
@@ -55,7 +58,8 @@ const mapStateToProps = (state) => {
         usersCountOnPage,
         currentPage,
         totalCount,
-        isFetching
+        isFetching,
+        followingInProgress,
     } = state.usersPage;
     
     return {
@@ -64,6 +68,7 @@ const mapStateToProps = (state) => {
         currentPage,
         totalCount,
         isFetching,
+        followingInProgress,
     };
 };
 
@@ -73,4 +78,5 @@ export default connect(mapStateToProps, {
     setUsers,
     setCurrentPage,
     setIsFetching,
+    setFollowingInProgress,
 })(UsersContainer);
