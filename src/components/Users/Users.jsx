@@ -3,8 +3,7 @@ const Users = (props) => {
     const usersArray = props.users.map( u => {
         return <User key={u.id}
                     userData={u}
-                    followingInProgress={props.followingInProgress}                
-                    setFollowingInProgress={props.setFollowingInProgress}
+                    followingInProgress={props.followingInProgress}                    
                     follow={props.follow}
                     unfollow={props.unfollow}                
                 />;

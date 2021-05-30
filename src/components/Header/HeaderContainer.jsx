@@ -2,21 +2,11 @@ import {Component} from 'react';
 import Header from './Header';
 import {connect} from 'react-redux';
 import {
-    setUserData,
-    setIsFetching,
+    checkAuthMe,
 } from '../../redux/authReduser';
-import { authAPI } from '../api/api';
 class HeaderContainer extends Component {
     componentDidMount() {
-        this.props.setIsFetching(true);
-        authAPI.authMe()
-            .then( data => {    
-                if (data.resultCode === 0) {
-                    this.props.setUserData(data.data);
-                }      
-                
-                this.props.setIsFetching(false);                
-            });
+        this.props.checkAuthMe();
     }
 
     render() {
@@ -46,4 +36,4 @@ const mapStateToProps = (state) => {
     return {...state.auth};
 };
 
-export default connect(mapStateToProps, {setUserData, setIsFetching})(HeaderContainer);
+export default connect(mapStateToProps, {checkAuthMe})(HeaderContainer);

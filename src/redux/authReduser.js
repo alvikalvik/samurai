@@ -1,3 +1,5 @@
+import { authAPI } from "../components/api/api";
+
 const SET_USER_DATA = 'SET_USER_DATA';
 const SET_ISFETCHING = 'SET_ISFETCHING';
 
@@ -36,5 +38,20 @@ export const setIsFetching = (isFetching) => ({
     type: SET_ISFETCHING,
     isFetching
 });
+
+export const checkAuthMe = () => (dispatch) => {    
+    dispatch(setIsFetching(true));
+        authAPI.authMe()
+            .then( data => {    
+                if (data.resultCode === 0) {
+                    dispatch(setUserData(data.data));
+                }              
+            })
+            .catch(err => console.log(err))
+            .finally( () => {
+                dispatch(setIsFetching(false));
+            });
+}
+
 
 export default authReducer;

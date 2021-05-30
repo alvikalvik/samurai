@@ -4,33 +4,18 @@ import Users from './Users';
 import Preloader from "../common/Preloader/Preloader";
 import {
     follow,
-    unfollow,
-    setUsers,
-    setCurrentPage,
-    setIsFetching,
-    setFollowingInProgress,
+    unfollow,    
+    getUsers
 } from '../../redux/usersReduser';
-import { usersAPI } from '../api/api';
 
 class UsersContainer extends Component {
     componentDidMount = () => {
-        this.props.setIsFetching(true);
-        usersAPI.getUsers(this.props.usersCountOnPage, this.props.currentPage)
-            .then( data => {                
-                this.props.setUsers(data);
-                this.props.setIsFetching(false);
-            });
+        this.props.getUsers(this.props.usersCountOnPage, this.props.currentPage);
     }    
 
     handlePageClick = (e, i) => {        
-        e.preventDefault(); 
-        this.props.setIsFetching(true);  
-        usersAPI.getUsers(this.props.usersCountOnPage, i) 
-            .then( data => {                
-                this.props.setUsers(data);
-                this.props.setCurrentPage(i);
-                this.props.setIsFetching(false);
-            });
+        e.preventDefault();
+        this.props.getUsers(this.props.usersCountOnPage, i);
     }
     
     render() {    
@@ -74,9 +59,6 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
     follow,
-    unfollow,
-    setUsers,
-    setCurrentPage,
-    setIsFetching,
-    setFollowingInProgress,
+    unfollow,    
+    getUsers
 })(UsersContainer);

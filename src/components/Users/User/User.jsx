@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import avatar from '../../../assets/img/avatar.png';
-import { followAPI } from '../../api/api';
 
 const UserWrapper = styled.div`
     display: flex;
@@ -70,31 +69,11 @@ const UserStatus = styled.div`
 
 const User = (props) => {
     const handleUnfollow = () => {
-        props.setFollowingInProgress(true, props.userData.id);
-        followAPI.unfollowUser(props.userData.id)
-            .then( data => {    
-                if (data.resultCode === 0) {
-                    props.unfollow(props.userData.id);
-                }             
-            })
-            .catch(err => console.log(err))
-            .finally( () => {
-                props.setFollowingInProgress(false, props.userData.id);
-            });
+        props.unfollow(props.userData.id);
     };
 
     const handleFollow = () => {
-        props.setFollowingInProgress(true, props.userData.id);
-        followAPI.followUser(props.userData.id)        
-            .then( data => { 
-                if (data.resultCode === 0) {
-                    props.follow(props.userData.id);
-                }             
-            })
-            .catch(err => console.log(err))
-            .finally( () => {
-                props.setFollowingInProgress(false, props.userData.id);
-            });
+        props.follow(props.userData.id);        
     };        
 
     return (
