@@ -6,6 +6,7 @@ import {
     getProfile,
 } from '../../redux/profileReduser';
 import { Redirect, withRouter } from 'react-router';
+import withAuthRedirect from '../../hoc/withAuthRedirect';
 
 class ProfileContainer extends Component {  
     componentDidMount() {        
@@ -39,12 +40,13 @@ class ProfileContainer extends Component {
 const mapStateToProps = (state) => {        
     
     return {
-        profile: state.profilePage.profile,
-        isAutorized: state.auth.isAutorized,
+        profile: state.profilePage.profile,        
         a: 2,
     };
 };
 
 const ProfileWithRouter = withRouter(ProfileContainer);
 
-export default connect(mapStateToProps, {getProfile})(ProfileWithRouter);
+const AuthRedirectComponent = withAuthRedirect(ProfileWithRouter);
+
+export default connect(mapStateToProps, {getProfile})(AuthRedirectComponent);
