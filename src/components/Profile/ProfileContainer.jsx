@@ -5,7 +5,7 @@ import Preloader from '../common/Preloader/Preloader';
 import {
     getProfile,
 } from '../../redux/profileReduser';
-import { withRouter } from 'react-router';
+import { Redirect, withRouter } from 'react-router';
 
 class ProfileContainer extends Component {  
     componentDidMount() {        
@@ -17,26 +17,31 @@ class ProfileContainer extends Component {
     }
 
     render() {
+        if (!this.props.isAutorized) {            
+            return <Redirect to='/login' />
+        }
+
         if (!this.props.profile) {
             return <Preloader />
         }
 
         return (
             <>
-                <Profile profile={this.props.profile}/>
+                <Profile
+                    profile={this.props.profile}
+                    isAutorized={this.props.isAutorized}
+                />
             </>
         );
     }    
 }
 
-const mapStateToProps = (state) => {
-    const {
-        profile
-    } = state.profilePage;
+const mapStateToProps = (state) => {        
     
     return {
-        profile,
-        a: 2
+        profile: state.profilePage.profile,
+        isAutorized: state.auth.isAutorized,
+        a: 2,
     };
 };
 

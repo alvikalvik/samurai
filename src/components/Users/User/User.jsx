@@ -79,7 +79,7 @@ const User = (props) => {
     return (
         <UserWrapper>
             <UserPhotoWrapper>
-                <NavLink to="/profile/2">
+                <NavLink to={`/profile/${props.userData.id}`}>
                     <img src={props.userData.photos.small ?? avatar} alt="Avatar" />
                 </NavLink>
                 
