@@ -36,4 +36,7 @@ const mapStateToProps = (state) => {
     return {...state.auth};
 };
 
-export default connect(mapStateToProps, {checkAuthMe})(HeaderContainer);
+export default connect(
+    mapStateToProps,
+    {checkAuthMe}
+)(HeaderContainer);
