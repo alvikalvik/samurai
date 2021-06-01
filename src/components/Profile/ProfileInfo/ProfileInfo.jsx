@@ -1,5 +1,6 @@
 import {profileTopImg, profileTextInfo} from './ProfileInfo.module.css';
 import avatar from '../../../assets/img/avatar.png';
+import ProfileStatus from './ProfileStatus';
 
 const ProfileInfo = ({profile}) => {
     return (
@@ -9,6 +10,7 @@ const ProfileInfo = ({profile}) => {
                 <img src={profile.photos.large ?? avatar} alt="avatar"/>
                 <div>Description: {profile.aboutMe ?? '---'}</div>
                 ava + descr
+                <ProfileStatus status={'Hello World!'} />
 			</div>            
         </>
     );
