@@ -3,15 +3,26 @@ import { Component } from "react";
 
 class ProfileStatus extends Component {
     state = {
-        editMode: false
-    }
+        editMode: false,
+        localStatus: this.props.status
+    }   
 
     setEditMode = (editMode) => {
         this.setState({editMode});
     }
 
-    handleStatusInputBlur = () => {        
+    handleStatusInputBlur = (evt) => {        
         this.setEditMode(false);
+        this.props.updateProfileStatus(evt.target.value);
+    }
+
+    handleStatusInputChange = (evt) => {               
+        this.setState({localStatus: evt.target.value});
+    }
+
+    handleSpanDoubleClick = (evt) => {
+        this.setEditMode(true);
+        this.setState({localStatus: evt.target.textContent});
     }
 
     render() {
@@ -21,10 +32,11 @@ class ProfileStatus extends Component {
                 <div>
                     <input
                         type="text"
-                        value={this.props.status}
+                        value={this.state.localStatus}
+                        onChange={this.handleStatusInputChange}
                         onFocus={ (e) => e.target.select() } 
                         autoFocus
-                        onBlur={ this.handleStatusInputBlur }
+                        onBlur={this.handleStatusInputBlur}
                     />
                 </div>
             );
@@ -32,8 +44,8 @@ class ProfileStatus extends Component {
             content = (
                 <div>
                     <span
-                        onDoubleClick={ () => this.setEditMode(true) }
-                    >{this.props.status}</span>
+                        onDoubleClick={this.handleSpanDoubleClick}
+                    >{this.props.status ?? '---'}</span>
                 </div>
             );
         }
