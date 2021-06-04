@@ -5,7 +5,14 @@ class ProfileStatus extends Component {
     state = {
         editMode: false,
         localStatus: this.props.status
-    }   
+    }  
+    
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.status !== prevProps.status)
+        this.setState({
+            localStatus: this.props.status
+        });
+    }
 
     setEditMode = (editMode) => {
         this.setState({editMode});
@@ -20,9 +27,8 @@ class ProfileStatus extends Component {
         this.setState({localStatus: evt.target.value});
     }
 
-    handleSpanDoubleClick = (evt) => {
-        this.setEditMode(true);
-        this.setState({localStatus: evt.target.textContent});
+    handleSpanDoubleClick = () => {
+        this.setEditMode(true);        
     }
 
     render() {
@@ -45,7 +51,7 @@ class ProfileStatus extends Component {
                 <div>
                     <span
                         onDoubleClick={this.handleSpanDoubleClick}
-                    >{this.props.status ?? '---'}</span>
+                    >{this.props.status || '---'}</span>
                 </div>
             );
         }
