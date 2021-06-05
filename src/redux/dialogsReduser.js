@@ -1,5 +1,4 @@
 const ADD_DIALOG_MESSAGE = 'ADD-DIALOG-MESSAGE';
-const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE-NEW-MESSAGE-TEXT';
 
 const initialState = {
     dialogsData: [
@@ -14,37 +13,39 @@ const initialState = {
         {id: 2, message: "2Lorem, ipsum."},
         {id: 3, message: "3Lorem ipsum dolor sit, amet consectetur adipisicing."},
         {id: 4, message: "4Lorem ipsum dolor sit amet consectetur adipisicing elit. Error?"},
-    ], 
-    newMessageText: '',       
+    ],       
 };
 
 const dialogsReducer = (state = initialState, action) => {
     switch (action.type) {        
-        case ADD_DIALOG_MESSAGE:             
+        case ADD_DIALOG_MESSAGE:                         
             const newMessage = {
                 id: 6,
-                message: state.newMessageText,                    
+                message: action.newMessageText,                    
             };
+            // !!! move to thunk in future !!!
+            setTimeout(() => {                    
+                action.setSubmitting(false);
+                action.resetForm();
+            }, 400);
             return {
                 ...state,
                 messagesData: [...state.messagesData, newMessage],
                 newMessageText: '',
-            };                                         
-        case UPDATE_NEW_MESSAGE_TEXT: 
-            return {
-                ...state,
-                newMessageText: action.text
-            };                                
+            };                
         default:
             return state;
     }    
 };
 
-export const addDialogMessage = () =>
-    ( {type: ADD_DIALOG_MESSAGE} );
-export const updateNewDialogMessageText = (text) => ({
-    type: UPDATE_NEW_MESSAGE_TEXT,
-    text: text
-});
+export const addDialogMessage = (newMessageText, setSubmitting,
+    resetForm) =>
+    ( {
+        type: ADD_DIALOG_MESSAGE,
+        newMessageText,
+        setSubmitting,
+        resetForm
+    } );
+
 
 export default dialogsReducer;

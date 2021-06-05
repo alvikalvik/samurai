@@ -1,7 +1,6 @@
 import { profileAPI } from "../components/api/api";
 
 const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_PROFILE_STATUS = 'SET_PROFILE_STATUS';
 
@@ -11,7 +10,6 @@ const initialState = {
         {id: 2, message: "Hello World!!!", likesCount: "13"},
         {id: 3, message: "And hello to you from the World!", likesCount: "99"},
     ],
-    newPostText: '',
     profile: null,
     status: ''
 };
@@ -21,19 +19,19 @@ const profileReducer = (state = initialState, action) => {
         case ADD_POST:                         
             const newPost = {
                 id: 4,
-                message: state.newPostText,
+                message: action.newPostText,
                 likesCount: "0"
             };
+            // !!! move to thunk in future !!!
+            setTimeout(() => {                    
+                action.setSubmitting(false);
+                action.resetForm();
+            }, 400);
             return {
                 ...state,
                 postsData: [...state.postsData, newPost],
                 newPostText: '',
-            };      
-        case UPDATE_NEW_POST_TEXT: 
-            return {
-                ...state,
-                newPostText: action.text,
-            };      
+            }; 
         case SET_USER_PROFILE: 
             return {
                 ...state,
@@ -49,11 +47,13 @@ const profileReducer = (state = initialState, action) => {
     }    
 };
 
-export const addPost = () => ( {type: ADD_POST} );
-export const updateNewPostText = (text) => ({
-    type: UPDATE_NEW_POST_TEXT,
-    text
-});
+export const addPost = (newPostText, setSubmitting, resetForm) => ({
+    type: ADD_POST,
+    newPostText,
+    setSubmitting,
+    resetForm
+} );
+
 export const setUserProfile = (profile) => ({
     type: SET_USER_PROFILE,
     profile

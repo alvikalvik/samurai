@@ -1,6 +1,7 @@
 import styles from './Dialogs.module.css';
 import Message from './Message/Message';
 import Dialog from './Dialog/Dialog';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 const {
     dialogs,
@@ -21,15 +22,6 @@ const Dialogs = (props) => {
     const messagesElements = props.messagesData
         .map( ({id, message}) => <Message message={message} key={id} />);
 
-    const handleSubmit = (evt) => {
-        evt.preventDefault();
-        props.addDialogMessage();
-    };
-    const handleTextChange = (evt) => {
-        const text = evt.target.value;
-        props.updateNewDialogMessageText(text);
-    };
-
     return (
         <div className={dialogs}>
             <div className={dialogsBar}>
@@ -41,22 +33,45 @@ const Dialogs = (props) => {
                 {messagesElements} 
 
                 <h3 className={messagesTitle}>Add message</h3>
-                <form className={dialogsForm} onSubmit={handleSubmit}>
-                    <textarea
-                        name="newmessage"
-                        id="newmessage"
-                        className={newMessageTextarea}
-                        placeholder="Write new message here"                    
-                        value={props.newMessageText}
-                        onChange={handleTextChange}
-                    />
-
-                    <button                    
-                        className={newMessageBtn}
-                    >
-                        Add message
-                    </button>
-                </form>                             
+                <Formik
+                    initialValues={{ newmessage: ''}}
+                    validate={values => {
+                        const errors = {};
+                        if (!values.newmessage) {
+                        errors.newmessage = 'Required';
+                        } 
+                        return errors;
+                    }}
+                    onSubmit={(values, { setSubmitting, resetForm }) => {                        
+                        props.addDialogMessage(values.newmessage, setSubmitting, resetForm);                    
+                        // setTimeout(() => {                    
+                        //     setSubmitting(false);
+                        // }, 400);
+                    }}
+                >
+                    {({ isSubmitting }) => (
+                        <Form className={dialogsForm}>
+                            <Field
+                                component="textarea"
+                                name="newmessage"
+                                id="newmessage"
+                                className={newMessageTextarea}
+                                placeholder="Write new message here"
+                            />
+                            <ErrorMessage
+                                name="newmessage"
+                                component="div"
+                            />                    
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className={newMessageBtn}
+                            >
+                                Add message
+                            </button>
+                        </Form>
+                    )}
+                </Formik>                                            
             </div>            
         </div>
     );
