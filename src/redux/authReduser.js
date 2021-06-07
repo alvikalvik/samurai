@@ -3,13 +3,15 @@ import { authAPI } from "../components/api/api";
 const SET_USER_DATA = 'SET_USER_DATA';
 const CLEAR_USER_DATA = 'CLEAR_USER_DATA';
 const SET_ISFETCHING = 'SET_ISFETCHING';
+const SET_LOGIN_ERROR_MESSAGE = 'SET_LOGIN_ERROR_MESSAGE';
 
 const initialState = {        
     id: null,
     login: null,
     email: null,
     isAutorized: false,
-    isFetching: false
+    isFetching: false,
+    loginErrorMessage: '',
 };
 
 const authReducer = (state = initialState, action) => {
@@ -34,6 +36,11 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: action.isFetching
             };      
+        case SET_LOGIN_ERROR_MESSAGE: 
+            return {
+                ...state,
+                loginErrorMessage: action.loginErrorMessage
+            };      
         default:
             return state;
     }    
@@ -53,13 +60,18 @@ export const setIsFetching = (isFetching) => ({
     isFetching
 });
 
+export const setLoginErrorMessage = (loginErrorMessage) => ({
+    type: SET_LOGIN_ERROR_MESSAGE,
+    loginErrorMessage
+});
+
 export const checkAuthMe = () => (dispatch) => {    
     dispatch(setIsFetching(true));
     authAPI.authMe()
         .then( data => {    
             if (data.resultCode === 0) {
-                dispatch(setUserData(data.data));
-            }              
+                dispatch(setUserData(data.data));                
+            }             
         })
         .catch(err => console.log(err))
         .finally( () => {
@@ -83,6 +95,9 @@ export const login = (
                     id: data.data.userId,
                     isAutorized: true,                    
                 }));
+                dispatch(setLoginErrorMessage(''));
+            } else {                
+                dispatch(setLoginErrorMessage(data.messages[0]));
             }              
         })
         .catch(err => console.log(err))
@@ -97,6 +112,10 @@ export const logout = () => (dispatch) => {
         .then( data => {    
             if (data.resultCode === 0) {
                 dispatch(clearUserData());
+                dispatch(setLoginErrorMessage(''));
+            } else {                
+                dispatch(setLoginErrorMessage(data.messages[0]));
+                alert(`Sorry, Logout is unsuccessful. Error message: ${data.messages[0] || 'Unknown error'}.  Please write us about this to email: suppurt@us.com`);
             }              
         })
         .catch(err => console.log(err))

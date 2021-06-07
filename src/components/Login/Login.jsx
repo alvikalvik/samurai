@@ -66,6 +66,11 @@ const Login = (props) => (
                             Remember me
                         </label>
                     </div>
+                    {props.loginErrorMessage
+                        ? <div>Login unsuccessful. Error: {props.loginErrorMessage}</div>
+                        : null
+                    }
+                    <div></div>
                     <div>
                         <button
                             type="submit"

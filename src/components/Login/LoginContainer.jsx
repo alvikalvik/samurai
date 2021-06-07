@@ -16,6 +16,7 @@ class LoginContainer extends Component {
             <Login
                 login={this.props.login}
                 isFetching={this.props.isFetching}
+                loginErrorMessage={this.props.loginErrorMessage}
             />
         );
     }
@@ -26,11 +27,13 @@ const mapStateToProps = (state) => {
     const {        
         isAutorized,
         isFetching,
+        loginErrorMessage
     } = state.auth;
     
     return {        
         isAutorized,
         isFetching,
+        loginErrorMessage
     };
 };
 
