@@ -3,14 +3,19 @@ import styles from './Header.module.css';
 
 const {header, login} = styles;
 
-const Header = (props) => {
+const Header = (props) => {    
     let loginBlockContent;  
 
     if (props.isFetching) {
         loginBlockContent = 'Loading...';
     } else {
         loginBlockContent = props.isAutorized
-                                ? props.login
+                                ? <span>
+                                    {props.email}
+                                    <button
+                                        onClick={props.logout}
+                                    >Logout</button>
+                                  </span> 
                                 : <NavLink to={`/login`}>
                                     Login
                                   </NavLink>;

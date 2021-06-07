@@ -1,6 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-const Login = () => (
+
+const Login = (props) => (
     <div>
         <h1>Login</h1>
         <Formik
@@ -23,14 +24,15 @@ const Login = () => (
                 }
                 return errors;
             }}
-            onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                }, 400);
+            onSubmit={(values) => {                                
+                    props.login(
+                    values.email,
+                    values.password,
+                    values.rememberMe                    
+                )                
             }}
         >
-            {({ isSubmitting }) => (
+            {() => (
                 <Form>
                     <div>
                         <Field
@@ -67,7 +69,7 @@ const Login = () => (
                     <div>
                         <button
                             type="submit"
-                            disabled={isSubmitting}
+                            disabled={props.isFetching}
                         >
                             Login
                         </button>

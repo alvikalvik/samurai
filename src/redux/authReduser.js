@@ -1,6 +1,7 @@
 import { authAPI } from "../components/api/api";
 
 const SET_USER_DATA = 'SET_USER_DATA';
+const CLEAR_USER_DATA = 'CLEAR_USER_DATA';
 const SET_ISFETCHING = 'SET_ISFETCHING';
 
 const initialState = {        
@@ -19,6 +20,15 @@ const authReducer = (state = initialState, action) => {
                 ...action.data,
                 isAutorized: true
             };        
+        case CLEAR_USER_DATA:             
+            return { 
+                ...state,               
+                id: null,
+                login: null,
+                email: null,
+                isAutorized: false,
+                isFetching: false
+            };        
         case SET_ISFETCHING: 
             return {
                 ...state,
@@ -34,6 +44,10 @@ export const setUserData = (data) => ( {
     data
 } );
 
+export const clearUserData = () => ( {
+    type: CLEAR_USER_DATA,    
+} );
+
 export const setIsFetching = (isFetching) => ({
     type: SET_ISFETCHING,
     isFetching
@@ -41,16 +55,54 @@ export const setIsFetching = (isFetching) => ({
 
 export const checkAuthMe = () => (dispatch) => {    
     dispatch(setIsFetching(true));
-        authAPI.authMe()
-            .then( data => {    
-                if (data.resultCode === 0) {
-                    dispatch(setUserData(data.data));
-                }              
-            })
-            .catch(err => console.log(err))
-            .finally( () => {
-                dispatch(setIsFetching(false));
-            });
+    authAPI.authMe()
+        .then( data => {    
+            if (data.resultCode === 0) {
+                dispatch(setUserData(data.data));
+            }              
+        })
+        .catch(err => console.log(err))
+        .finally( () => {
+            dispatch(setIsFetching(false));
+        });
+}
+
+export const login = (
+    email,
+    password,
+    rememberMe,
+) => (dispatch) => {        
+    dispatch(setIsFetching(true));    
+    authAPI.login(email, password, rememberMe)
+        .then( data => {    
+            if (data.resultCode === 0) {
+                dispatch(setUserData({
+                    email,
+                    password,
+                    rememberMe,
+                    id: data.data.userId,
+                    isAutorized: true,                    
+                }));
+            }              
+        })
+        .catch(err => console.log(err))
+        .finally( () => {
+            dispatch(setIsFetching(false));            
+        });
+}
+
+export const logout = () => (dispatch) => {            
+    dispatch(setIsFetching(true));    
+    authAPI.logout()
+        .then( data => {    
+            if (data.resultCode === 0) {
+                dispatch(clearUserData());
+            }              
+        })
+        .catch(err => console.log(err))
+        .finally( () => {
+            dispatch(setIsFetching(false));            
+        });
 }
 
 
