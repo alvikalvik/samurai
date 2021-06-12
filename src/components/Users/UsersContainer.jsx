@@ -5,22 +5,22 @@ import Preloader from "../common/Preloader/Preloader";
 import {
     follow,
     unfollow,    
-    getUsers
+    requestUsers
 } from '../../redux/usersReduser';
-import withAuthRedirect from '../../hoc/withAuthRedirect';
 import { compose } from 'redux';
+import { getCurrentPage, getFollowingInProgress, getIsFetching, getTotalCount, getUsers, getUsersCountOnPage } from '../../redux/usersSelectors';
 
 class UsersContainer extends Component {
-    componentDidMount = () => {
-        this.props.getUsers(this.props.usersCountOnPage, this.props.currentPage);
+    componentDidMount = () => {        
+        this.props.requestUsers(this.props.usersCountOnPage, this.props.currentPage);
     }    
 
     handlePageClick = (e, i) => {        
         e.preventDefault();
-        this.props.getUsers(this.props.usersCountOnPage, i);
+        this.props.requestUsers(this.props.usersCountOnPage, i);
     }
     
-    render() {    
+    render() {            
         if(this.props.isFetching) {
             return <Preloader />;
         } else {
@@ -40,22 +40,13 @@ class UsersContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {
-        users,
-        usersCountOnPage,
-        currentPage,
-        totalCount,
-        isFetching,
-        followingInProgress,
-    } = state.usersPage;
-    
     return {
-        users,
-        usersCountOnPage,
-        currentPage,
-        totalCount,
-        isFetching,
-        followingInProgress,
+        users: getUsers(state),
+        usersCountOnPage: getUsersCountOnPage(state),
+        currentPage: getCurrentPage(state),
+        totalCount: getTotalCount(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state),
     };
 };
 
@@ -63,7 +54,7 @@ export default compose(
     connect(mapStateToProps, {
         follow,
         unfollow,    
-        getUsers
+        requestUsers
     }),
-    withAuthRedirect
+    // withAuthRedirect
 )(UsersContainer);

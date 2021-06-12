@@ -67,7 +67,7 @@ export const setLoginErrorMessage = (loginErrorMessage) => ({
 
 export const checkAuthMe = () => (dispatch) => {    
     dispatch(setIsFetching(true));
-    authAPI.authMe()
+    return authAPI.authMe()
         .then( data => {    
             if (data.resultCode === 0) {
                 dispatch(setUserData(data.data));                
@@ -77,6 +77,7 @@ export const checkAuthMe = () => (dispatch) => {
         .finally( () => {
             dispatch(setIsFetching(false));
         });
+    
 }
 
 export const login = (

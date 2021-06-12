@@ -4,16 +4,31 @@ import NavbarContainer from "./components/Navbar/NavbarContainer";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import {Route, BrowserRouter} from 'react-router-dom';
+import {Route, withRouter} from 'react-router-dom';
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import LoginContainer from "./components/Login/LoginContainer";
+import { Component } from "react";
+import { connect } from "react-redux";
+import Preloader from './components/common/Preloader/Preloader';
+import {
+    initialize    
+} from './redux/appReduser';
+import { compose } from "redux";
 
 
-const App = () => {
-    return (
-        <BrowserRouter>
+class App extends Component {
+    componentDidMount() {
+        this.props.initialize();
+    }
+
+    render() {
+        if (!this.props.initialized) {
+            return <Preloader />            
+        }
+
+        return (            
             <div className="app-wrapper">
                 <HeaderContainer />
                 <NavbarContainer />
@@ -41,8 +56,22 @@ const App = () => {
                     </Route>
                 </main>				
             </div>
-        </BrowserRouter>		
-    );
+        );
+    }
+    
 };
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        initialized: state.app.initialized,
+    };
+} 
+
+export default compose(    
+    withRouter,
+    connect(mapStateToProps, {initialize} )    
+)(App);
+
+
+
+;

@@ -8,7 +8,6 @@ import {
     updateProfileStatus
 } from '../../redux/profileReduser';
 import { withRouter } from 'react-router';
-import withAuthRedirect from '../../hoc/withAuthRedirect';
 import { compose } from 'redux';
 
 class ProfileContainer extends Component {  
@@ -18,7 +17,8 @@ class ProfileContainer extends Component {
             if (this.props.autorizedUserId) {
                 userId = this.props.autorizedUserId;
             } else {
-                userId = this.props.a; // !!! Change in future
+                this.props.history.push('/login');
+                return
             }            
         } 
         this.props.getProfile(userId);
@@ -48,8 +48,7 @@ const mapStateToProps = (state) => {
     return {
         profile: state.profilePage.profile,  
         status: state.profilePage.status,
-        autorizedUserId: state.auth.id,      
-        a: 17235, // !!! hardcoded userID, change in future
+        autorizedUserId: state.auth.id,              
     };
 };
 
@@ -60,5 +59,5 @@ export default compose(
         updateProfileStatus
     }),
     withRouter,
-    withAuthRedirect
+    // withAuthRedirect
 )(ProfileContainer);

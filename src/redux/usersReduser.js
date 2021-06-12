@@ -4,7 +4,7 @@ const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET-USERS';
 const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE';
-const SET_ISFETCHING = 'SET_ISFETCHING';
+const SET_USERS_ISFETCHING = 'SET_USERS_ISFETCHING';
 const SET_FOLLOWING_IN_PROGRESS = 'SET_FOLLOWING_IN_PROGRESS';
 
 const initialState = {        
@@ -48,7 +48,7 @@ const usersReducer = (state = initialState, action) => {
                 ...state,
                 currentPage: action.currentPage
             };      
-        case SET_ISFETCHING: 
+        case SET_USERS_ISFETCHING: 
             return {
                 ...state,
                 isFetching: action.isFetching
@@ -83,7 +83,7 @@ export const setCurrentPage = (currentPage) => ({
     currentPage
 });
 export const setIsFetching = (isFetching) => ({
-    type: SET_ISFETCHING,
+    type: SET_USERS_ISFETCHING,
     isFetching
 });
 export const setFollowingInProgress = (isAddingToArray, userId) => ({
@@ -93,9 +93,9 @@ export const setFollowingInProgress = (isAddingToArray, userId) => ({
 });
 
 //ThunkCreators
-export const getUsers = (usersCountOnPage, currentPage) => (dispatch) => {
+export const requestUsers = (usersCountOnPage, currentPage) => (dispatch) => {    
     dispatch(setIsFetching(true));
-    usersAPI.getUsers(usersCountOnPage, currentPage)
+    usersAPI.requestUsers(usersCountOnPage, currentPage)
         .then( data => {                
             dispatch(setUsers(data));
             dispatch(setCurrentPage(currentPage));            
