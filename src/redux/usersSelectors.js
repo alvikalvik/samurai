@@ -1,6 +1,15 @@
-export const getUsers = (state) => {
+import { createSelector } from "reselect"
+
+export const getUsersSimpleSelector = (state) => {
     return state.usersPage.users
 }
+
+// Test of reselect
+// !!! Change in future !!!
+export const getUsers =
+    createSelector(getUsersSimpleSelector, (users) => {
+        return users.filter( u => true); // fake users modifying
+    });
 
 export const getUsersCountOnPage = (state) => {
     return state.usersPage.usersCountOnPage
