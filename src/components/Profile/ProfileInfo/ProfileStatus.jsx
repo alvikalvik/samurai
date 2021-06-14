@@ -1,66 +1,60 @@
-import { Component } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 
 
-class ProfileStatus extends Component {
-    state = {
-        editMode: false,
-        localStatus: this.props.status
-    }  
+
+const ProfileStatus = (props) => {
+
+    const [editMode, setEditMode] = useState(false);
+    const [localStatus, setLocalStatus] = useState(props.status);
+
+    useEffect( () => {
+        setLocalStatus(props.status);
+    }, [props.status]);
+
+    const handleStatusInputBlur = (evt) => {        
+        setEditMode(false);
+        props.updateProfileStatus(evt.target.value);
+    }
+
+    const handleStatusInputChange = (evt) => {               
+        setLocalStatus(evt.target.value);
+    }
+
+    const handleSpanDoubleClick = () => {
+        setEditMode(true);        
+    }
+
     
-    componentDidUpdate(prevProps, prevState) {
-        if (this.props.status !== prevProps.status)
-        this.setState({
-            localStatus: this.props.status
-        });
-    }
-
-    setEditMode = (editMode) => {
-        this.setState({editMode});
-    }
-
-    handleStatusInputBlur = (evt) => {        
-        this.setEditMode(false);
-        this.props.updateProfileStatus(evt.target.value);
-    }
-
-    handleStatusInputChange = (evt) => {               
-        this.setState({localStatus: evt.target.value});
-    }
-
-    handleSpanDoubleClick = () => {
-        this.setEditMode(true);        
-    }
-
-    render() {
-        let content;
-        if (this.state.editMode) {
-            content = (
-                <div>
-                    <input
-                        type="text"
-                        value={this.state.localStatus}
-                        onChange={this.handleStatusInputChange}
-                        onFocus={ (e) => e.target.select() } 
-                        autoFocus
-                        onBlur={this.handleStatusInputBlur}
-                    />
-                </div>
-            );
-        } else {
-            content = (
-                <div>
-                    <span
-                        onDoubleClick={this.handleSpanDoubleClick}
-                    >{this.props.status || '---'}</span>
-                </div>
-            );
-        }
-        return (
+    let content;
+    if (editMode) {
+        content = (
             <div>
-                {content}          
+                <input
+                    type="text"
+                    value={localStatus}
+                    onChange={handleStatusInputChange}
+                    onFocus={ (e) => e.target.select() } 
+                    autoFocus
+                    onBlur={handleStatusInputBlur}
+                />
+            </div>
+        );
+    } else {
+        content = (
+            <div>
+                <span
+                    onDoubleClick={handleSpanDoubleClick}
+                >{props.status || '---'}</span>
             </div>
         );
     }
+    return (
+        <div>
+            {content}          
+        </div>
+    );
+    
     
 }
 
