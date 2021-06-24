@@ -5,13 +5,14 @@ import Preloader from '../common/Preloader/Preloader';
 import {
     getProfile,
     getProfileStatus,
-    updateProfileStatus
+    updateProfileStatus,
+    savePhoto
 } from '../../redux/profileReduser';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
 
-class ProfileContainer extends Component {  
-    componentDidMount() {
+class ProfileContainer extends Component { 
+    actualizeProfileData = () => {
         let userId = this.props.match.params.userId;
         if (!userId) {                        
             if (this.props.autorizedUserId) {
@@ -25,10 +26,20 @@ class ProfileContainer extends Component {
         this.props.getProfileStatus(userId);
     }
 
+    componentDidMount() {
+        this.actualizeProfileData();
+    }
+
+    componentDidUpdate(prevProps) {        
+        if (this.props.profile && prevProps.profile && this.props.profile.userId !== prevProps.profile.userId) {
+            this.actualizeProfileData();
+        }        
+    }
+
     render() {                        
         if (!this.props.profile) {
             return <Preloader />
-        }        
+        }  
 
         return (
             <>
@@ -37,6 +48,8 @@ class ProfileContainer extends Component {
                     isAutorized={this.props.isAutorized}
                     status={this.props.status}
                     updateProfileStatus={this.props.updateProfileStatus}
+                    isOwner={this.props.profile.userId === this.props.autorizedUserId}
+                    savePhoto={this.props.savePhoto}
                 />
             </>
         );
@@ -56,7 +69,8 @@ export default compose(
     connect(mapStateToProps, {
         getProfile,
         getProfileStatus,
-        updateProfileStatus
+        updateProfileStatus,
+        savePhoto
     }),
     withRouter,
     // withAuthRedirect
