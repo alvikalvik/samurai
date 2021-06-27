@@ -6,7 +6,10 @@ import {
     getProfile,
     getProfileStatus,
     updateProfileStatus,
-    savePhoto
+    savePhoto,
+    setEditMode,
+    setIsFetching,
+    saveProfileFields
 } from '../../redux/profileReduser';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
@@ -50,6 +53,10 @@ class ProfileContainer extends Component {
                     updateProfileStatus={this.props.updateProfileStatus}
                     isOwner={this.props.profile.userId === this.props.autorizedUserId}
                     savePhoto={this.props.savePhoto}
+                    editMode={this.props.editMode}
+                    setEditMode={this.props.setEditMode}
+                    isFetching={this.props.isFetching}
+                    saveProfileFields={this.props.saveProfileFields}
                 />
             </>
         );
@@ -61,7 +68,9 @@ const mapStateToProps = (state) => {
     return {
         profile: state.profilePage.profile,  
         status: state.profilePage.status,
-        autorizedUserId: state.auth.id,              
+        autorizedUserId: state.auth.id,  
+        editMode: state.profilePage.editMode, 
+        isFetching: state.profilePage.isFetching          
     };
 };
 
@@ -70,7 +79,10 @@ export default compose(
         getProfile,
         getProfileStatus,
         updateProfileStatus,
-        savePhoto
+        savePhoto,
+        setEditMode,
+        setIsFetching,
+        saveProfileFields
     }),
     withRouter,
     // withAuthRedirect

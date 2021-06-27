@@ -28,31 +28,30 @@ const ProfileStatus = (props) => {
     
     let content;
     if (editMode) {
-        content = (
-            <div>
-                <input
-                    type="text"
-                    value={localStatus}
-                    onChange={handleStatusInputChange}
-                    onFocus={ (e) => e.target.select() } 
-                    autoFocus
-                    onBlur={handleStatusInputBlur}
-                />
-            </div>
+        content = (            
+            <input
+                type="text"
+                value={localStatus}
+                onChange={handleStatusInputChange}
+                onFocus={ (e) => e.target.select() } 
+                autoFocus
+                onBlur={handleStatusInputBlur}
+            />            
         );
     } else {
-        content = (
-            <div>
-                <span
-                    onDoubleClick={handleSpanDoubleClick}
-                >{props.status || '---'}</span>
-            </div>
+        content = (            
+            <span
+                onDoubleClick={handleSpanDoubleClick}
+            >{props.status || '---'}</span>            
         );
     }
     return (
-        <div>
-            {content}          
-        </div>
+        <>
+            <hr />
+            <div>
+                Status: {content}          
+            </div>
+        </>        
     );
     
     

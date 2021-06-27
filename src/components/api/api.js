@@ -36,6 +36,29 @@ export const profileAPI = {
                 return response.data
             });
     },
+    saveFields(userId, values) { 
+        const {aboutMe, lookingForAJob, lookingForAJobDescription, fullName, github, vk, facebook,instagram, twitter, website, mainLink, youtube} = values;
+        return instance.put(`/profile`, {
+            userId,
+            aboutMe,
+            lookingForAJob,
+            lookingForAJobDescription,
+            fullName,
+            contacts: {
+                github,
+                vk,
+                facebook,
+                instagram,
+                twitter,
+                website,
+                youtube,
+                mainLink,
+            },
+        })
+            .then(response => {                
+                return response.data
+            });
+    },
         
 };
 

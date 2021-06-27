@@ -4,6 +4,8 @@ const ADD_POST = 'ADD-POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_PROFILE_STATUS = 'SET_PROFILE_STATUS';
 const SET_PROFILE_PHOTO = 'SET_PROFILE_PHOTO';
+const SET_PROFILE_EDITMODE = 'SET_PROFILE_EDITMODE';
+const SET_PROFILE_ISFETCHING = 'SET_PROFILE_ISFETCHING';
 
 const initialState = {        
     postsData: [
@@ -12,7 +14,9 @@ const initialState = {
         {id: 3, message: "And hello to you from the World!", likesCount: "99"},
     ],
     profile: null,
-    status: ''
+    status: '',
+    editMode: false,
+    isFetching: false,
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -48,6 +52,16 @@ const profileReducer = (state = initialState, action) => {
                 ...state,
                 profile: {...state.profile, photos: action.photos}
             };      
+        case SET_PROFILE_EDITMODE:             
+            return {
+                ...state,
+                editMode: action.editMode
+            };      
+        case SET_PROFILE_ISFETCHING:             
+            return {
+                ...state,
+                isFetching: action.isFetching
+            };      
         default:
             return state;
     }    
@@ -71,6 +85,14 @@ export const setProfileStatus = (status) => ({
 export const setProfilePhoto = (photos) => ({
     type: SET_PROFILE_PHOTO,
     photos
+});
+export const setEditMode = (editMode) => ({
+    type: SET_PROFILE_EDITMODE,
+    editMode
+});
+export const setIsFetching = (isFetching) => ({
+    type: SET_PROFILE_ISFETCHING,
+    isFetching
 });
 
 export const getProfile = (userId) => (dispatch) => {    
@@ -110,6 +132,22 @@ export const savePhoto = (evt) => (dispatch) => {
                 }
             })
             .catch(err => console.log(err));
+}
+
+export const saveProfileFields = (userId, values) => (dispatch) => {
+    dispatch(setIsFetching(true));
+    
+    profileAPI.saveFields(userId, values)
+            .then( data => {                
+                if (data.resultCode === 0) {
+                    dispatch(getProfile(userId));
+                }
+            })
+            .catch(err => console.log(err))
+            .finally( () => {
+                dispatch(setIsFetching(false));
+                dispatch(setEditMode(false));
+            });
 }
 
 export default profileReducer;

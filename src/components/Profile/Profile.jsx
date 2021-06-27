@@ -10,6 +10,10 @@ const Profile = (props) => {
                 updateProfileStatus={props.updateProfileStatus}
                 isOwner={props.isOwner}
                 savePhoto={props.savePhoto}
+                editMode={props.editMode}
+                setEditMode={props.setEditMode}
+                isFetching={props.isFetching}
+                saveProfileFields={props.saveProfileFields}
             />            
             <MyPostsContainer />
         </>
