@@ -8,7 +8,8 @@ const Login = (props) => (
             initialValues={{
                 email: '',
                 password: '',
-                rememerMe: false
+                rememerMe: false,
+                captcha: ''
             }}
             validate={values => {
                 const errors = {};
@@ -28,7 +29,8 @@ const Login = (props) => (
                     props.login(
                     values.email,
                     values.password,
-                    values.rememberMe                    
+                    values.rememberMe,                    
+                    values.captcha,                    
                 )                
             }}
         >
@@ -66,6 +68,20 @@ const Login = (props) => (
                             Remember me
                         </label>
                     </div>
+                    {props.captchaUrl && 
+                        <>
+                            <div>
+                                <img src={props.captchaUrl} alt="captcha" />                           
+                            </div>
+                            <div>
+                                <Field
+                                    type="text"
+                                    name="captcha"
+                                />                            
+                            </div>
+                        </>                        
+                    }
+
                     {props.loginErrorMessage
                         ? <div>Login unsuccessful. Error: {props.loginErrorMessage}</div>
                         : null

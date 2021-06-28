@@ -1,9 +1,10 @@
-import { authAPI } from "../components/api/api";
+import { authAPI, securityAPI } from "../components/api/api";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const CLEAR_USER_DATA = 'CLEAR_USER_DATA';
 const SET_ISFETCHING = 'SET_ISFETCHING';
 const SET_LOGIN_ERROR_MESSAGE = 'SET_LOGIN_ERROR_MESSAGE';
+const SET_CAPTCHA_URL = 'SET_CAPTCHA_URL';
 
 const initialState = {        
     id: null,
@@ -12,6 +13,7 @@ const initialState = {
     isAutorized: false,
     isFetching: false,
     loginErrorMessage: '',
+    captchaUrl: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -40,6 +42,11 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loginErrorMessage: action.loginErrorMessage
+            };
+        case SET_CAPTCHA_URL: 
+            return {
+                ...state,
+                captchaUrl: action.captchaUrl
             };      
         default:
             return state;
@@ -58,6 +65,11 @@ export const clearUserData = () => ( {
 export const setIsFetching = (isFetching) => ({
     type: SET_ISFETCHING,
     isFetching
+});
+
+export const setCaptchaUrl = (captchaUrl) => ({
+    type: SET_CAPTCHA_URL,
+    captchaUrl
 });
 
 export const setLoginErrorMessage = (loginErrorMessage) => ({
@@ -84,9 +96,10 @@ export const login = (
     email,
     password,
     rememberMe,
+    captcha,
 ) => (dispatch) => {        
     dispatch(setIsFetching(true));    
-    authAPI.login(email, password, rememberMe)
+    authAPI.login(email, password, rememberMe, captcha)
         .then( data => {    
             if (data.resultCode === 0) {
                 dispatch(setUserData({
@@ -97,7 +110,14 @@ export const login = (
                     isAutorized: true,                    
                 }));
                 dispatch(setLoginErrorMessage(''));
-            } else {                
+            } else {   
+                if (data.resultCode === 10) {
+                    securityAPI.getCaptchaUrl()
+                        .then(data => {
+                            dispatch(setCaptchaUrl(data.url));
+                        })
+                        .catch(err => console.log(err))
+                }             
                 dispatch(setLoginErrorMessage(data.messages[0]));
             }              
         })
