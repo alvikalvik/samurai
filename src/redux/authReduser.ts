@@ -7,16 +7,18 @@ const SET_LOGIN_ERROR_MESSAGE = 'SET_LOGIN_ERROR_MESSAGE';
 const SET_CAPTCHA_URL = 'SET_CAPTCHA_URL';
 
 const initialState = {        
-    id: null,
-    login: null,
-    email: null,
+    id: null as number | null,
+    login: null as string | null,
+    email: null as string | null,
     isAutorized: false,
     isFetching: false,
     loginErrorMessage: '',
-    captchaUrl: null,
+    captchaUrl: null as string | null,
 };
 
-const authReducer = (state = initialState, action) => {
+type InitialStateType = typeof initialState;
+
+const authReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case SET_USER_DATA:             
             return {
@@ -31,7 +33,7 @@ const authReducer = (state = initialState, action) => {
                 login: null,
                 email: null,
                 isAutorized: false,
-                isFetching: false
+                isFetching: false,
             };        
         case SET_ISFETCHING: 
             return {
@@ -53,39 +55,66 @@ const authReducer = (state = initialState, action) => {
     }    
 };
 
-export const setUserData = (data) => ( {
+type UserDataType = {
+    id: number
+    email: string   
+    login: string
+    password?: string
+    rememberMe?: boolean
+    isAutorized?: boolean
+}
+type SetUserDataActionType = {
+    type: typeof SET_USER_DATA,
+    data: UserDataType
+}
+export const setUserData = (data: UserDataType): SetUserDataActionType => ( {
     type: SET_USER_DATA,
     data
 } );
 
-export const clearUserData = () => ( {
+type ClearUserDataActionType = {
+    type: typeof CLEAR_USER_DATA
+}
+export const clearUserData = (): ClearUserDataActionType => ( {
     type: CLEAR_USER_DATA,    
 } );
 
-export const setIsFetching = (isFetching) => ({
+type SetIsFetchingActionType = {
+    type: typeof SET_ISFETCHING,
+    isFetching: boolean
+}
+export const setIsFetching = (isFetching: boolean): SetIsFetchingActionType => ({
     type: SET_ISFETCHING,
     isFetching
 });
 
-export const setCaptchaUrl = (captchaUrl) => ({
+type SetCaptchaUrlActionType = {
+    type: typeof SET_CAPTCHA_URL,
+    captchaUrl: string | null
+}
+export const setCaptchaUrl = (captchaUrl: string | null): SetCaptchaUrlActionType => ({
     type: SET_CAPTCHA_URL,
     captchaUrl
 });
 
-export const setLoginErrorMessage = (loginErrorMessage) => ({
+type SetLoginErrorMessageActionType = {
+    type: typeof SET_LOGIN_ERROR_MESSAGE,
+    loginErrorMessage: string
+}
+export const setLoginErrorMessage = (loginErrorMessage: string): SetLoginErrorMessageActionType => ({
     type: SET_LOGIN_ERROR_MESSAGE,
     loginErrorMessage
 });
 
-export const checkAuthMe = () => (dispatch) => {    
+export const checkAuthMe = () => (dispatch: any) => {    
     dispatch(setIsFetching(true));
     return authAPI.authMe()
-        .then( data => {    
+        .then( (data: any) => {    
             if (data.resultCode === 0) {
                 dispatch(setUserData(data.data));                
             }             
         })
-        .catch(err => console.log(err))
+        .catch( (err: any) => console.log(err))
         .finally( () => {
             dispatch(setIsFetching(false));
         });
@@ -93,14 +122,14 @@ export const checkAuthMe = () => (dispatch) => {
 }
 
 export const login = (
-    email,
-    password,
-    rememberMe,
-    captcha,
-) => (dispatch) => {        
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    captcha: string,
+) => (dispatch: any) => {        
     dispatch(setIsFetching(true));    
     authAPI.login(email, password, rememberMe, captcha)
-        .then( data => {    
+        .then( (data: any) => {    
             if (data.resultCode === 0) {
                 dispatch(setUserData({
                     email,
@@ -108,29 +137,29 @@ export const login = (
                     rememberMe,
                     id: data.data.userId,
                     isAutorized: true,                    
-                }));
+                } as UserDataType));
                 dispatch(setLoginErrorMessage(''));
             } else {   
                 if (data.resultCode === 10) {
                     securityAPI.getCaptchaUrl()
-                        .then(data => {
+                        .then( (data: any) => {
                             dispatch(setCaptchaUrl(data.url));
                         })
-                        .catch(err => console.log(err))
+                        .catch( (err: any) => console.log(err))
                 }             
                 dispatch(setLoginErrorMessage(data.messages[0]));
             }              
         })
-        .catch(err => console.log(err))
+        .catch( (err: any) => console.log(err))
         .finally( () => {
             dispatch(setIsFetching(false));            
         });
 }
 
-export const logout = () => (dispatch) => {            
+export const logout = () => (dispatch: any) => {            
     dispatch(setIsFetching(true));    
     authAPI.logout()
-        .then( data => {    
+        .then( (data: any) => {    
             if (data.resultCode === 0) {
                 dispatch(clearUserData());
                 dispatch(setLoginErrorMessage(''));
@@ -139,7 +168,7 @@ export const logout = () => (dispatch) => {
                 alert(`Sorry, Logout is unsuccessful. Error message: ${data.messages[0] || 'Unknown error'}.  Please write us about this to email: suppurt@us.com`);
             }              
         })
-        .catch(err => console.log(err))
+        .catch( (err: any) => console.log(err))
         .finally( () => {
             dispatch(setIsFetching(false));            
         });

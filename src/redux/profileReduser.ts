@@ -1,4 +1,6 @@
 import { profileAPI } from "../components/api/api";
+import { PostDataType, UserProfileType, UserProfilePhotosType } from "../Types/types";
+
 
 const ADD_POST = 'ADD-POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
@@ -7,7 +9,16 @@ const SET_PROFILE_PHOTO = 'SET_PROFILE_PHOTO';
 const SET_PROFILE_EDITMODE = 'SET_PROFILE_EDITMODE';
 const SET_PROFILE_ISFETCHING = 'SET_PROFILE_ISFETCHING';
 
-const initialState = {        
+
+type InitialStateType = {        
+    postsData: PostDataType[],
+    profile: UserProfileType | null,
+    status: string,
+    editMode: boolean,
+    isFetching: boolean,
+    newPostText: string
+}
+const initialState: InitialStateType = {        
     postsData: [
         {id: 1, message: "Hi, how are you?", likesCount: "15"},
         {id: 2, message: "Hello World!!!", likesCount: "13"},
@@ -17,9 +28,10 @@ const initialState = {
     status: '',
     editMode: false,
     isFetching: false,
+    newPostText: '',
 };
 
-const profileReducer = (state = initialState, action) => {
+const profileReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case ADD_POST:                         
             const newPost = {
@@ -50,7 +62,10 @@ const profileReducer = (state = initialState, action) => {
         case SET_PROFILE_PHOTO:             
             return {
                 ...state,
-                profile: {...state.profile, photos: action.photos}
+                profile: {
+                    ...state.profile,
+                    photos: action.photos
+                } as UserProfileType
             };      
         case SET_PROFILE_EDITMODE:             
             return {
@@ -67,83 +82,113 @@ const profileReducer = (state = initialState, action) => {
     }    
 };
 
-export const addPost = (newPostText, setSubmitting, resetForm) => ({
+type AddPostActionType = {
+    type: typeof ADD_POST,
+    newPostText: string,
+    setSubmitting: any,
+    resetForm: any
+}
+export const addPost = (newPostText: string, setSubmitting: any, resetForm: any): AddPostActionType => ({
     type: ADD_POST,
     newPostText,
     setSubmitting,
     resetForm
 } );
 
-export const setUserProfile = (profile) => ({
+type SetUserProfileActionType = {
+    type: typeof SET_USER_PROFILE,
+    profile: UserProfileType
+}
+export const setUserProfile = (profile: UserProfileType): SetUserProfileActionType => ({
     type: SET_USER_PROFILE,
     profile
 });
-export const setProfileStatus = (status) => ({
+
+type SetProfileStatusActionType = {
+    type: typeof SET_PROFILE_STATUS,
+    status: string
+}
+export const setProfileStatus = (status: string): SetProfileStatusActionType => ({
     type: SET_PROFILE_STATUS,
     status
 });
-export const setProfilePhoto = (photos) => ({
+
+type SetProfilePhotoActionTyte = {
+    type: typeof SET_PROFILE_PHOTO,
+    photos: UserProfilePhotosType
+}
+export const setProfilePhoto = (photos: UserProfilePhotosType): SetProfilePhotoActionTyte => ({
     type: SET_PROFILE_PHOTO,
     photos
 });
-export const setEditMode = (editMode) => ({
+
+type SetEditModeActionType = {
+    type: typeof SET_PROFILE_EDITMODE,
+    editMode: boolean
+}
+export const setEditMode = (editMode: boolean): SetEditModeActionType => ({
     type: SET_PROFILE_EDITMODE,
     editMode
 });
-export const setIsFetching = (isFetching) => ({
+
+type SetIsFetchingActionType = {
+    type: typeof SET_PROFILE_ISFETCHING,
+    isFetching: boolean
+}
+export const setIsFetching = (isFetching: boolean): SetIsFetchingActionType => ({
     type: SET_PROFILE_ISFETCHING,
     isFetching
 });
 
-export const getProfile = (userId) => (dispatch) => {    
+export const getProfile = (userId: number) => (dispatch: any) => {    
     profileAPI.getProfileData(userId)
-            .then( data => {                
+            .then( (data: any) => {                
                 dispatch(setUserProfile(data));
             })
-            .catch(err => console.log(err));
+            .catch( (err: any) => console.log(err));
 }
 
-export const getProfileStatus = (userId) => (dispatch) => {    
+export const getProfileStatus = (userId: number) => (dispatch: any) => {    
     profileAPI.getProfileStatus(userId)
-            .then( status => {                 
+            .then( (status: any) => {                 
                 if (status !== '') {                              
                     dispatch(setProfileStatus(status));
                 }
             })
-            .catch(err => console.log(err));
+            .catch( (err: any) => console.log(err));
 }
 
-export const updateProfileStatus = (status) => (dispatch) => {        
+export const updateProfileStatus = (status: any) => (dispatch: any) => {        
     profileAPI.setProfileStatus(status)
-            .then( data => {                
+            .then( (data: any) => {                
                 if (data.resultCode === 0) {
                     dispatch(setProfileStatus(status));
                 }
             })
-            .catch(err => console.log(err));
+            .catch( (err: any) => console.log(err));
 }
 
-export const savePhoto = (evt) => (dispatch) => {
+export const savePhoto = (evt: any) => (dispatch: any) => {
     const photo = evt.target.files[0];
     profileAPI.savePhoto(photo)
-            .then( data => {                
+            .then( (data: any) => {                
                 if (data.resultCode === 0) {
                     dispatch(setProfilePhoto(data.data.photos));
                 }
             })
-            .catch(err => console.log(err));
+            .catch( (err: any) => console.log(err));
 }
 
-export const saveProfileFields = (userId, values) => (dispatch) => {
+export const saveProfileFields = (userId: number, values: any) => (dispatch: any) => {
     dispatch(setIsFetching(true));
     
     profileAPI.saveFields(userId, values)
-            .then( data => {                
+            .then( (data: any) => {                
                 if (data.resultCode === 0) {
                     dispatch(getProfile(userId));
                 }
             })
-            .catch(err => console.log(err))
+            .catch( (err: any) => console.log(err))
             .finally( () => {
                 dispatch(setIsFetching(false));
                 dispatch(setEditMode(false));

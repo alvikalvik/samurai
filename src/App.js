@@ -4,7 +4,7 @@ import HeaderContainer from "./components/Header/HeaderContainer";
 import NavbarContainer from "./components/Navbar/NavbarContainer";
 import News from "./components/News/News";
 import Settings from "./components/Settings/Settings";
-import {Route, withRouter} from 'react-router-dom';
+import {Route, withRouter, Switch, Redirect} from 'react-router-dom';
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
@@ -36,27 +36,33 @@ class App extends Component {
                 <NavbarContainer />
                 <main className="app-content">
                     <Suspense fallback={<Preloader />}>
-                        <Route path="/profile/:userId?">
-                            <ProfileContainer />
-                        </Route>
-                        <Route path="/dialogs">
-                            <DialogsContainer />
-                        </Route>
-                        <Route path="/news">
-                            <News />
-                        </Route>
-                        <Route path="/music">
-                            <Music />
-                        </Route>
-                        <Route path="/users">
-                            <UsersContainer />
-                        </Route>
-                        <Route path="/settings">
-                            <Settings />
-                        </Route>
-                        <Route path="/login">
-                            <LoginContainer />
-                        </Route>
+                        <Switch>
+                            <Redirect exact from="/" to="/profile" />
+                            {/* <Route exact path="/">
+                                <Redirect to="/profile" />
+                            </Route> */}
+                            <Route path="/profile/:userId?">
+                                <ProfileContainer />
+                            </Route>
+                            <Route path="/dialogs">
+                                <DialogsContainer />
+                            </Route>
+                            <Route path="/news">
+                                <News />
+                            </Route>
+                            <Route path="/music">
+                                <Music />
+                            </Route>
+                            <Route path="/users">
+                                <UsersContainer />
+                            </Route>
+                            <Route path="/settings">
+                                <Settings />
+                            </Route>
+                            <Route path="/login">
+                                <LoginContainer />
+                            </Route>
+                        </Switch>
                     </Suspense>
                 </main>				
             </div>

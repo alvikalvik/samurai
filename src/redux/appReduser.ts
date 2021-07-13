@@ -7,12 +7,14 @@ const initialState = {
     initialized: false,    
 };
 
-const appReducer = (state = initialState, action) => {
+type InitialStateType = typeof initialState;
+
+const appReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {       
         case INITIALIZE: 
             return {
                 ...state,
-                initialized: true
+                initialized: true,
             };     
     
         default:
@@ -20,13 +22,16 @@ const appReducer = (state = initialState, action) => {
     }    
 };
 
-export const setInitialized = () => ( {
+type SetInitializedActionType = {
+    type: typeof INITIALIZE
+}
+export const setInitialized = (): SetInitializedActionType => ( {
     type: INITIALIZE,   
 } );
 
 
 
-export const initialize = () => (dispatch) => { 
+export const initialize = () => (dispatch: any) => { 
     dispatch(checkAuthMe())
         .then(
             () => {

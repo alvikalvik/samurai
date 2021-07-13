@@ -1,6 +1,13 @@
+import { DialogsUserDataType, DialogsMessagesDataType } from "../Types/types";
+
 const ADD_DIALOG_MESSAGE = 'ADD-DIALOG-MESSAGE';
 
-const initialState = {
+
+type InitialStateType = {
+    dialogsData: DialogsUserDataType[]
+    messagesData: DialogsMessagesDataType[]
+}
+const initialState: InitialStateType = {
     dialogsData: [
         {id: 1, name: "User1"},
         {id: 2, name: "User2"},
@@ -16,7 +23,7 @@ const initialState = {
     ],       
 };
 
-const dialogsReducer = (state = initialState, action) => {
+const dialogsReducer = (state = initialState, action: any) => {
     switch (action.type) {        
         case ADD_DIALOG_MESSAGE:                         
             const newMessage = {
@@ -38,8 +45,13 @@ const dialogsReducer = (state = initialState, action) => {
     }    
 };
 
-export const addDialogMessage = (newMessageText, setSubmitting,
-    resetForm) =>
+type AddDialogMessageActionType = {
+    type: typeof ADD_DIALOG_MESSAGE,
+    newMessageText: string,
+    setSubmitting: any,
+    resetForm: any
+}
+export const addDialogMessage = (newMessageText: string, setSubmitting: any, resetForm: any): AddDialogMessageActionType =>
     ( {
         type: ADD_DIALOG_MESSAGE,
         newMessageText,
